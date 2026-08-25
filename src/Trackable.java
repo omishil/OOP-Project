@@ -1,7 +1,6 @@
 interface Trackable {
 
-    void markAttendance();
+    void markAttendance(boolean present);
 
-    void showAttendance();
+    boolean isPresent();
 }
-//it means Any class that implements it must provide these methods

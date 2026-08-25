@@ -1,8 +1,8 @@
-class Nurse extends Person implements Trackable {
+class OtherStaff extends Person implements Trackable {
 
     private boolean present;
 
-    Nurse(String name, int id, int age) {
+    OtherStaff(String name, int id, int age) {
         super(name, id, age);
         this.present = false;
     }
@@ -14,7 +14,7 @@ class Nurse extends Person implements Trackable {
     public boolean isPresent() {
         return present;
     }void displayInfo() {
-        System.out.println("Nurse: " + getName());
+        System.out.println("Other Staff: " + getName());
         System.out.println("ID: " + getId());
         System.out.println("Age: " + getAge());
     }

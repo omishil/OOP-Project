@@ -1,37 +1,41 @@
-class Doctor extends Person implements Trackable{
+import java.util.ArrayList;
+
+class Doctor extends Person implements Trackable {
 
     private String specialization;
-
+    private boolean present;
+    private ArrayList<String> availableTimes;
     Doctor(String name, int id, int age, String specialization) {
-
         super(name, id, age);
-
         this.specialization = specialization;
+        this.present = false;
+        this.availableTimes = new ArrayList<>();
+    }
+    void addAvailableTime(String time) {
+        availableTimes.add(time);
+    }
+    boolean isTimeAvailable(String time) {
+        return availableTimes.contains(time);
+    }
+    public void markAttendance(boolean present) {
+        this.present = present;
     }
 
-    String getSpecialization() {
+    public boolean isPresent() {
+        return present;
+    }
+
+    public String getSpecialization() {
         return specialization;
-    }
-
-    @Override
-    void displayInfo() {
-
-        System.out.println("Doctor Name: " + getName());
-        System.out.println("Doctor ID: " + getId());
+    }void displayInfo() {
+        System.out.println("Doctor: " + getName());
+        System.out.println("ID: " + getId());
         System.out.println("Age: " + getAge());
         System.out.println("Specialization: " + specialization);
     }
-
-    //Surgeon extends Doctor so Surgeon automatically gets the Trackable behavior.
+    //to display dc names in gui dropbox
     @Override
-    public void markAttendance() {
-
-        System.out.println(getName() + " attendance marked.");
-    }
-
-    @Override
-    public void showAttendance() {
-
-        System.out.println(getName() + " is present.");
+    public String toString() {
+        return getName();
     }
 }
