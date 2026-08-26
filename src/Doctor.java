@@ -14,9 +14,19 @@ class Doctor extends Person implements Trackable {
     void addAvailableTime(String time) {
         availableTimes.add(time);
     }
-    boolean isTimeAvailable(String time) {
+//    Doctor d1 = new Doctor("Rahim", 101, 30, "Cardiologist");
+//
+//d1.addAvailableTime("10:00 AM");
+//d1.addAvailableTime("2:00 PM");
+//["10:00 AM", "2:00 PM"]
+
+    boolean isTimeAvailable(String time)
+    {
         return availableTimes.contains(time);
     }
+//    if (d1.isTimeAvailable("10:00 AM")) {
+//        System.out.println("Time is available!");
+//    }
     public void markAttendance(boolean present) {
         this.present = present;
     }

@@ -6,12 +6,15 @@ class PatientGUI extends JFrame {
     PatientGUI() {
 
         setTitle("Patient Portal");
-        setSize(500, 400);
+        setSize(500, 450);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
 
+        // --------------------------------
         // Main panel
+        // --------------------------------
+
         JPanel panel = new JPanel(new GridBagLayout());
 
         GridBagConstraints gbc = new GridBagConstraints();
@@ -104,13 +107,31 @@ class PatientGUI extends JFrame {
 
 
         // --------------------------------
+        // Doctor information
+        // --------------------------------
+
+        JLabel specializationLabel =
+                new JLabel("Specialization: ");
+
+        JLabel statusLabel =
+                new JLabel("Status: ");
+
+
+        gbc.gridy = 3;
+        panel.add(specializationLabel, gbc);
+
+        gbc.gridy = 4;
+        panel.add(statusLabel, gbc);
+
+
+        // --------------------------------
         // Choose time label
         // --------------------------------
 
         JLabel timeLabel =
                 new JLabel("Choose appointment time:");
 
-        gbc.gridy = 3;
+        gbc.gridy = 5;
 
         panel.add(timeLabel, gbc);
 
@@ -130,7 +151,7 @@ class PatientGUI extends JFrame {
         timeBox.addItem("3:00 PM");
         timeBox.addItem("4:00 PM");
 
-        gbc.gridy = 4;
+        gbc.gridy = 6;
 
         panel.add(timeBox, gbc);
 
@@ -142,10 +163,39 @@ class PatientGUI extends JFrame {
         JButton bookButton =
                 new JButton("Book Appointment");
 
-        gbc.gridy = 5;
+        gbc.gridy = 7;
         gbc.insets = new Insets(20, 10, 10, 10);
 
         panel.add(bookButton, gbc);
+
+
+        // --------------------------------
+        // Doctor selection action
+        // --------------------------------
+
+        doctorBox.addActionListener(e -> {
+
+            // Get selected doctor
+            Doctor selectedDoctor =
+                    (Doctor) doctorBox.getSelectedItem();
+
+
+            // Display specialization
+            specializationLabel.setText(
+                    "Specialization: "
+                            + selectedDoctor.getSpecialization()
+            );
+
+
+            // Display attendance status
+            statusLabel.setText(
+                    "Status: "
+                            + (selectedDoctor.isPresent()
+                            ? "Available"
+                            : "Not Available")
+            );
+
+        });
 
 
         // --------------------------------
