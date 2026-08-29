@@ -5,25 +5,20 @@ class NurseGUI extends JFrame {
 
     NurseGUI() {
 
-        setTitle("Nurse Management");
-        setSize(500, 350);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setTitle("Nurse Registration");
+        setSize(500, 600);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
 
 
-        // Main panel
-        JPanel panel = new JPanel(new GridBagLayout());
+        JPanel panel =
+                new JPanel(new GridBagLayout());
 
-        GridBagConstraints gbc = new GridBagConstraints();
+        GridBagConstraints gbc =
+                new GridBagConstraints();
 
-
-        // --------------------------------
-        // Nurse object
-        // --------------------------------
-
-        Nurse nurse1 = new Nurse(
-                "Nurse A", 201, 28
-        );
+        gbc.insets =
+                new Insets(10, 10, 10, 10);
 
 
         // --------------------------------
@@ -31,114 +26,266 @@ class NurseGUI extends JFrame {
         // --------------------------------
 
         JLabel titleLabel =
-                new JLabel("Nurse Management");
+                new JLabel("Nurse Registration");
 
         gbc.gridx = 0;
         gbc.gridy = 0;
-        gbc.insets = new Insets(10, 10, 20, 10);
+        gbc.gridwidth = 2;
 
         panel.add(titleLabel, gbc);
 
 
         // --------------------------------
-        // Nurse label
+        // Name
         // --------------------------------
 
-        JLabel nurseLabel =
-                new JLabel("Select Nurse:");
+        JLabel nameLabel =
+                new JLabel("Name:");
 
+        JTextField nameField =
+                new JTextField(15);
+
+        gbc.gridwidth = 1;
+        gbc.gridx = 0;
         gbc.gridy = 1;
 
-        panel.add(nurseLabel, gbc);
+        panel.add(nameLabel, gbc);
+
+        gbc.gridx = 1;
+
+        panel.add(nameField, gbc);
 
 
         // --------------------------------
-        // Nurse dropdown
+        // ID
         // --------------------------------
 
-        JComboBox<Nurse> nurseBox =
-                new JComboBox<>();
+        JLabel idLabel =
+                new JLabel("ID:");
 
-        nurseBox.addItem(nurse1);
+        JTextField idField =
+                new JTextField(15);
 
+        gbc.gridx = 0;
         gbc.gridy = 2;
 
-        panel.add(nurseBox, gbc);
+        panel.add(idLabel, gbc);
+
+        gbc.gridx = 1;
+
+        panel.add(idField, gbc);
 
 
         // --------------------------------
-        // Attendance label
+        // Age
         // --------------------------------
 
-        JLabel attendanceLabel =
-                new JLabel("Attendance: Absent");
+        JLabel ageLabel =
+                new JLabel("Age:");
 
+        JTextField ageField =
+                new JTextField(15);
+
+        gbc.gridx = 0;
         gbc.gridy = 3;
 
-        panel.add(attendanceLabel, gbc);
+        panel.add(ageLabel, gbc);
+
+        gbc.gridx = 1;
+
+        panel.add(ageField, gbc);
 
 
         // --------------------------------
-        // Present button
+        // Time
         // --------------------------------
 
-        JButton presentButton =
-                new JButton("Mark Present");
+        JLabel timeLabel =
+                new JLabel("Available Time:");
 
+        String[] times = {
+                "9:00 AM",
+                "10:00 AM",
+                "11:00 AM",
+                "12:00 PM",
+                "2:00 PM",
+                "3:00 PM",
+                "4:00 PM"
+        };
+
+        JComboBox<String> timeBox =
+                new JComboBox<>(times);
+
+        gbc.gridx = 0;
         gbc.gridy = 4;
 
-        panel.add(presentButton, gbc);
+        panel.add(timeLabel, gbc);
+
+        gbc.gridx = 1;
+
+        panel.add(timeBox, gbc);
 
 
         // --------------------------------
-        // Absent button
+        // Add Time
         // --------------------------------
 
-        JButton absentButton =
-                new JButton("Mark Absent");
+        JButton addTimeButton =
+                new JButton("Add Time");
 
+        gbc.gridx = 1;
         gbc.gridy = 5;
 
-        panel.add(absentButton, gbc);
+        panel.add(addTimeButton, gbc);
 
 
         // --------------------------------
-        // Present button action
+        // Selected Times
         // --------------------------------
 
-        presentButton.addActionListener(e -> {
+        JLabel selectedLabel =
+                new JLabel("Selected Times:");
 
-            Nurse selectedNurse =
-                    (Nurse) nurseBox.getSelectedItem();
+        gbc.gridx = 0;
+        gbc.gridy = 6;
+        gbc.gridwidth = 2;
 
-            selectedNurse.markAttendance(true);
+        panel.add(selectedLabel, gbc);
 
-            attendanceLabel.setText(
-                    "Attendance: Present"
-            );
+
+        DefaultListModel<String> timeModel =
+                new DefaultListModel<>();
+
+        JList<String> timeList =
+                new JList<>(timeModel);
+
+        JScrollPane scrollPane =
+                new JScrollPane(timeList);
+
+        scrollPane.setPreferredSize(
+                new Dimension(180, 80)
+        );
+
+        gbc.gridy = 7;
+
+        panel.add(scrollPane, gbc);
+
+
+        // --------------------------------
+        // Register
+        // --------------------------------
+
+        JButton registerButton =
+                new JButton(
+                        "Register & Mark Present"
+                );
+
+        gbc.gridy = 8;
+
+        panel.add(registerButton, gbc);
+
+
+        // --------------------------------
+        // Back
+        // --------------------------------
+
+        JButton backButton =
+                new JButton("Back");
+
+        gbc.gridy = 9;
+
+        panel.add(backButton, gbc);
+
+
+        // --------------------------------
+        // Add Time Action
+        // --------------------------------
+
+        addTimeButton.addActionListener(e -> {
+
+            String selectedTime =
+                    (String) timeBox.getSelectedItem();
+
+            if (!timeModel.contains(selectedTime)) {
+
+                timeModel.addElement(selectedTime);
+            }
+
         });
 
 
         // --------------------------------
-        // Absent button action
+        // Register Action
         // --------------------------------
 
-        absentButton.addActionListener(e -> {
+        registerButton.addActionListener(e -> {
 
-            Nurse selectedNurse =
-                    (Nurse) nurseBox.getSelectedItem();
+            String name =
+                    nameField.getText();
 
-            selectedNurse.markAttendance(false);
+            int id =
+                    Integer.parseInt(
+                            idField.getText()
+                    );
 
-            attendanceLabel.setText(
-                    "Attendance: Absent"
+            int age =
+                    Integer.parseInt(
+                            ageField.getText()
+                    );
+
+
+            // Create Nurse
+
+            Nurse nurse =
+                    new Nurse(
+                            name,
+                            id,
+                            age
+                    );
+
+
+            // Add available times
+
+            for (int i = 0;
+                 i < timeModel.size();
+                 i++) {
+
+                nurse.addAvailableTime(
+                        timeModel.getElementAt(i)
+                );
+            }
+
+
+            // Mark present
+
+            nurse.markAttendance(true);
+
+
+            // Store nurse
+
+            HospitalData.nurses.add(nurse);
+
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Nurse registered successfully!"
             );
+
         });
 
 
         // --------------------------------
-        // Add panel
+        // Back Action
         // --------------------------------
+
+        backButton.addActionListener(e -> {
+
+            new MedicalStaffGUI();
+
+            dispose();
+
+        });
+
 
         add(panel);
 

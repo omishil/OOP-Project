@@ -30,11 +30,16 @@ class Doctor extends Person implements Trackable {
     public void markAttendance(boolean present) {
         this.present = present;
     }
-
+    ArrayList<String> getAvailableTimes() {
+        return availableTimes;
+    }
     public boolean isPresent() {
         return present;
     }
+    void removeAvailableTime(String time) {
 
+        availableTimes.remove(time);
+    }
     public String getSpecialization() {
         return specialization;
     }void displayInfo() {
@@ -46,6 +51,7 @@ class Doctor extends Person implements Trackable {
     //to display dc names in gui dropbox
     @Override
     public String toString() {
-        return getName();
+
+        return getName() + " - " + specialization;
     }
 }

@@ -1,13 +1,14 @@
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 
 class PatientGUI extends JFrame {
 
     PatientGUI() {
 
         setTitle("Patient Portal");
-        setSize(500, 450);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setSize(500, 500);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
 
 
@@ -15,52 +16,19 @@ class PatientGUI extends JFrame {
         // Main panel
         // --------------------------------
 
-        JPanel panel = new JPanel(new GridBagLayout());
+        JPanel panel =
+                new JPanel(new GridBagLayout());
 
-        GridBagConstraints gbc = new GridBagConstraints();
-
-
-        // --------------------------------
-        // Doctor objects
-        // --------------------------------
-
-        Doctor doctor1 = new Doctor(
-                "Dr. Rahim", 101, 40, "Cardiology"
-        );
-
-        Doctor doctor2 = new Doctor(
-                "Dr. Karim", 102, 45, "Neurology"
-        );
-
-        Doctor doctor3 = new Doctor(
-                "Dr. Hasan", 103, 38, "Medicine"
-        );
+        GridBagConstraints gbc =
+                new GridBagConstraints();
 
 
         // --------------------------------
-        // Doctor available times
+        // Get doctors from HospitalData
         // --------------------------------
 
-        doctor1.addAvailableTime("10:00 AM");
-        doctor1.addAvailableTime("11:00 AM");
-        doctor1.addAvailableTime("12:00 PM");
-
-        doctor2.addAvailableTime("2:00 PM");
-        doctor2.addAvailableTime("3:00 PM");
-        doctor2.addAvailableTime("4:00 PM");
-
-        doctor3.addAvailableTime("9:00 AM");
-        doctor3.addAvailableTime("10:00 AM");
-        doctor3.addAvailableTime("11:00 AM");
-
-
-        // --------------------------------
-        // Today's attendance
-        // --------------------------------
-
-        doctor1.markAttendance(true);
-        doctor2.markAttendance(false);
-        doctor3.markAttendance(true);
+        ArrayList<Doctor> doctors =
+                HospitalData.doctors;
 
 
         // --------------------------------
@@ -72,7 +40,8 @@ class PatientGUI extends JFrame {
 
         gbc.gridx = 0;
         gbc.gridy = 0;
-        gbc.insets = new Insets(10, 10, 20, 10);
+        gbc.insets =
+                new Insets(10, 10, 20, 10);
 
         panel.add(welcomeLabel, gbc);
 
@@ -85,7 +54,8 @@ class PatientGUI extends JFrame {
                 new JLabel("Choose your doctor:");
 
         gbc.gridy = 1;
-        gbc.insets = new Insets(10, 10, 10, 10);
+        gbc.insets =
+                new Insets(10, 10, 10, 10);
 
         panel.add(doctorLabel, gbc);
 
@@ -97,9 +67,10 @@ class PatientGUI extends JFrame {
         JComboBox<Doctor> doctorBox =
                 new JComboBox<>();
 
-        doctorBox.addItem(doctor1);
-        doctorBox.addItem(doctor2);
-        doctorBox.addItem(doctor3);
+        for (Doctor doctor : doctors) {
+
+            doctorBox.addItem(doctor);
+        }
 
         gbc.gridy = 2;
 
@@ -118,10 +89,19 @@ class PatientGUI extends JFrame {
 
 
         gbc.gridy = 3;
-        panel.add(specializationLabel, gbc);
+
+        panel.add(
+                specializationLabel,
+                gbc
+        );
+
 
         gbc.gridy = 4;
-        panel.add(statusLabel, gbc);
+
+        panel.add(
+                statusLabel,
+                gbc
+        );
 
 
         // --------------------------------
@@ -129,7 +109,9 @@ class PatientGUI extends JFrame {
         // --------------------------------
 
         JLabel timeLabel =
-                new JLabel("Choose appointment time:");
+                new JLabel(
+                        "Choose appointment time:"
+                );
 
         gbc.gridy = 5;
 
@@ -143,14 +125,6 @@ class PatientGUI extends JFrame {
         JComboBox<String> timeBox =
                 new JComboBox<>();
 
-        timeBox.addItem("9:00 AM");
-        timeBox.addItem("10:00 AM");
-        timeBox.addItem("11:00 AM");
-        timeBox.addItem("12:00 PM");
-        timeBox.addItem("2:00 PM");
-        timeBox.addItem("3:00 PM");
-        timeBox.addItem("4:00 PM");
-
         gbc.gridy = 6;
 
         panel.add(timeBox, gbc);
@@ -161,12 +135,33 @@ class PatientGUI extends JFrame {
         // --------------------------------
 
         JButton bookButton =
-                new JButton("Book Appointment");
+                new JButton(
+                        "Book Appointment"
+                );
 
         gbc.gridy = 7;
-        gbc.insets = new Insets(20, 10, 10, 10);
+
+        gbc.insets =
+                new Insets(
+                        20,
+                        10,
+                        10,
+                        10
+                );
 
         panel.add(bookButton, gbc);
+
+
+        // --------------------------------
+        // Back button
+        // --------------------------------
+
+        JButton backButton =
+                new JButton("Back");
+
+        gbc.gridy = 8;
+
+        panel.add(backButton, gbc);
 
 
         // --------------------------------
@@ -175,45 +170,105 @@ class PatientGUI extends JFrame {
 
         doctorBox.addActionListener(e -> {
 
-            // Get selected doctor
             Doctor selectedDoctor =
-                    (Doctor) doctorBox.getSelectedItem();
+                    (Doctor)
+                            doctorBox.getSelectedItem();
+
+
+            if (selectedDoctor == null) {
+
+                return;
+            }
 
 
             // Display specialization
+
             specializationLabel.setText(
                     "Specialization: "
-                            + selectedDoctor.getSpecialization()
+                            + selectedDoctor
+                            .getSpecialization()
             );
 
 
             // Display attendance status
+
             statusLabel.setText(
                     "Status: "
-                            + (selectedDoctor.isPresent()
-                            ? "Available"
-                            : "Not Available")
+                            + (
+                            selectedDoctor.isPresent()
+                                    ? "Available"
+                                    : "Not Available"
+                    )
             );
+
+
+            // --------------------------------
+            // Update available times
+            // --------------------------------
+
+            timeBox.removeAllItems();
+
+
+            for (
+                    String time :
+                    selectedDoctor
+                            .getAvailableTimes()
+            ) {
+
+                timeBox.addItem(time);
+            }
 
         });
 
 
         // --------------------------------
-        // Button action
+        // Book button action
         // --------------------------------
 
         bookButton.addActionListener(e -> {
 
-            // Get the selected doctor
+            // Get selected doctor
+
             Doctor selectedDoctor =
-                    (Doctor) doctorBox.getSelectedItem();
+                    (Doctor)
+                            doctorBox.getSelectedItem();
 
-            // Get the selected time
+
+            // Get selected time
+
             String selectedTime =
-                    (String) timeBox.getSelectedItem();
+                    (String)
+                            timeBox.getSelectedItem();
 
 
-            // Check if doctor is present
+            // Check doctor
+
+            if (selectedDoctor == null) {
+
+                JOptionPane.showMessageDialog(
+                        this,
+                        "Please select a doctor."
+                );
+
+                return;
+            }
+
+
+            // Check time
+
+            if (selectedTime == null) {
+
+                JOptionPane.showMessageDialog(
+                        this,
+                        "Please select an appointment time."
+                );
+
+                return;
+            }
+
+
+            // Check doctor attendance
+
             if (!selectedDoctor.isPresent()) {
 
                 JOptionPane.showMessageDialog(
@@ -223,8 +278,15 @@ class PatientGUI extends JFrame {
 
             }
 
-            // Doctor is present but busy at this time
-            else if (!selectedDoctor.isTimeAvailable(selectedTime)) {
+
+            // Check time availability
+
+            else if (
+                    !selectedDoctor
+                            .isTimeAvailable(
+                                    selectedTime
+                            )
+            ) {
 
                 JOptionPane.showMessageDialog(
                         this,
@@ -233,8 +295,20 @@ class PatientGUI extends JFrame {
 
             }
 
-            // Doctor is present and time is available
+
+            // Successful booking
+
             else {
+
+                selectedDoctor
+                        .removeAvailableTime(
+                                selectedTime
+                        );
+
+                timeBox.removeItem(
+                        selectedTime
+                );
+
 
                 JOptionPane.showMessageDialog(
                         this,
@@ -246,7 +320,20 @@ class PatientGUI extends JFrame {
 
 
         // --------------------------------
-        // Add panel to frame
+        // Back button action
+        // --------------------------------
+
+        backButton.addActionListener(e -> {
+
+            new MainGUI();
+
+            dispose();
+
+        });
+
+
+        // --------------------------------
+        // Add panel
         // --------------------------------
 
         add(panel);

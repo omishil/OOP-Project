@@ -6,25 +6,53 @@ class DoctorTypeGUI extends JFrame {
 
         setTitle("Doctor Type");
         setSize(500, 300);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
+
+
+        // --------------------------------
+        // Label
+        // --------------------------------
 
         JLabel label = new JLabel(
                 "Select Doctor Type",
                 SwingConstants.CENTER
         );
 
-        JButton doctorButton = new JButton("Regular Doctor");
-        JButton surgeonButton = new JButton("Surgeon");
+
+        // --------------------------------
+        // Buttons
+        // --------------------------------
+
+        JButton doctorButton =
+                new JButton("Regular Doctor");
+
+        JButton surgeonButton =
+                new JButton("Surgeon");
+
+        JButton backButton =
+                new JButton("Back");
+
+
+        // --------------------------------
+        // Panel
+        // --------------------------------
 
         JPanel panel = new JPanel();
 
         panel.add(doctorButton);
         panel.add(surgeonButton);
+        panel.add(backButton);
+
 
         add(label, "North");
         add(panel, "Center");
-//now if user clicks on dc/surgeon
+
+
+        // --------------------------------
+        // Regular Doctor
+        // --------------------------------
+
         doctorButton.addActionListener(e -> {
 
             new DoctorGUI();
@@ -32,12 +60,31 @@ class DoctorTypeGUI extends JFrame {
             dispose();
         });
 
+
+        // --------------------------------
+        // Surgeon
+        // --------------------------------
+
         surgeonButton.addActionListener(e -> {
 
             new SurgeonGUI();
 
             dispose();
         });
+
+
+        // --------------------------------
+        // Back
+        // --------------------------------
+
+        backButton.addActionListener(e -> {
+
+            new MedicalStaffGUI();
+
+            dispose();
+        });
+
+
         setVisible(true);
     }
 }

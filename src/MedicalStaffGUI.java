@@ -6,7 +6,7 @@ class MedicalStaffGUI extends JFrame {
 
         setTitle("Medical Staff");
         setSize(500, 400);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
 
         JLabel label = new JLabel(
@@ -14,38 +14,80 @@ class MedicalStaffGUI extends JFrame {
                 SwingConstants.CENTER
         );
 
-        JButton doctorButton = new JButton("Doctor");
-        JButton nurseButton = new JButton("Nurse");
-        JButton staffButton = new JButton("Other Staff");
+        JButton doctorButton =
+                new JButton("Doctor");
+
+        JButton nurseButton =
+                new JButton("Nurse");
+
+        JButton staffButton =
+                new JButton("Other Staff");
+
+        JButton backButton =
+                new JButton("Back");
+
 
         JPanel panel = new JPanel();
 
         panel.add(doctorButton);
         panel.add(nurseButton);
         panel.add(staffButton);
+        panel.add(backButton);
+
 
         add(label, "North");
+
         add(panel, "Center");
 
-        //now if the user clicks doctor he should see another interface
+
+        // --------------------------------
+        // Doctor button
+        // --------------------------------
+
         doctorButton.addActionListener(e -> {
 
             new DoctorTypeGUI();
 
             dispose();
         });
+
+
+        // --------------------------------
+        // Nurse button
+        // --------------------------------
+
         nurseButton.addActionListener(e -> {
 
             new NurseGUI();
 
             dispose();
         });
+
+
+        // --------------------------------
+        // Other Staff button
+        // --------------------------------
+
         staffButton.addActionListener(e -> {
 
             new OtherStaffGUI();
 
             dispose();
         });
+
+
+        // --------------------------------
+        // Back button
+        // --------------------------------
+
+        backButton.addActionListener(e -> {
+
+            new MainGUI();
+
+            dispose();
+        });
+
+
         setVisible(true);
     }
 }
